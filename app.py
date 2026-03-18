@@ -291,4 +291,5 @@ def send_visits(server, uid):
         return jsonify({"error": "Could not decode player information"}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=25648)
+    port = int(os.environ.get("PORT", 25648))
+    app.run(host="0.0.0.0", port=port)
