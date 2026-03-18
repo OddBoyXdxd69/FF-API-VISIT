@@ -14,6 +14,12 @@ from visit_count_pb2 import Info
 
 app = Flask(__name__)
 
+#THE ALIVE PAGE
+
+@app.route('/')
+def keep_alive():
+    return "API is awake!", 200
+
 # -------------------- Configuration --------------------
 MAX_CONCURRENT = 50                # Number of simultaneous requests
 RETRY_BACKOFF_BASE = 2              # Base for exponential backoff (seconds)
