@@ -14,8 +14,7 @@ from visit_count_pb2 import Info
 
 app = Flask(__name__)
 
-#THE ALIVE PAGE
-
+# -------------------- Keep Alive --------------------
 @app.route('/')
 def keep_alive():
     return "API is awake!", 200
@@ -27,7 +26,7 @@ MAX_RETRIES = 3                      # Max retries per token on failure
 TOKEN_BLACKLIST_TIME = 60            # Seconds to skip a token after repeated failures
 REQUEST_DELAY = 0.1                   # Base delay between requests (seconds)
 JITTER = 0.05                         # Random jitter added to delay
-REFRESH_INTERVAL = 25 * 60             # 25 minutes in seconds (tokens last ~30 min)
+REFRESH_INTERVAL = 40 * 60             # 40 minutes in seconds (tokens last ~50 min)
 MAX_CONSECUTIVE_ZERO_BATCHES = 5       # Stop after this many batches with zero success
 LAST_REFRESH_FILE = "last_refresh.txt"  # File storing last successful refresh timestamp
 
@@ -87,7 +86,7 @@ def refresh_loop():
 # -------------------- Initial check on startup --------------------
 last = get_last_refresh_time()
 if time.time() - last > REFRESH_INTERVAL:
-    print("🚨 Tokens are stale (last refresh > 25 min ago). Refreshing now...")
+    print("🚨 Tokens are stale (last refresh > 40 min ago). Refreshing now...")
     do_refresh()  # synchronous refresh before server starts
 else:
     print(f"✅ Tokens are fresh (last refresh {int(time.time()-last)} seconds ago).")
@@ -95,7 +94,7 @@ else:
 # Start the background thread after initial check
 refresh_thread = threading.Thread(target=refresh_loop, daemon=True)
 refresh_thread.start()
-print("🚀 Auto-refresh thread started (every 25 minutes)")
+print("🚀 Auto-refresh thread started (every 40 minutes)")
 
 # -------------------- Token loading --------------------
 def load_tokens(server_name):
